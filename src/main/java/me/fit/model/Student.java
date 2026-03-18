@@ -1,11 +1,21 @@
 package me.fit.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @NamedQuery(name = Student.GET_ALL_STUDENTS, query = "Select s from Student s")
+@Setter
+@Getter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Student {
 
     public static final String GET_ALL_STUDENTS = "GetAllStudents";
@@ -13,50 +23,16 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
     @SequenceGenerator(name = "student_seq", sequenceName = "student_seq", allocationSize = 1)
-
-    public Long id;
+    private Long id;
 
     public String ime;
 
     public String prezime;
 
-    public Student(){
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "student_id")
+    private List<Phone> phones = new ArrayList<>();
 
-    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
 
-  public void setIme(String ime) {
-    this.ime = ime;
-  }
-
-  public void setPrezime(String prezime) {
-    this.prezime = prezime;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getIme() {
-    return ime;
-  }
-
-  public String getPrezime() {
-    return prezime;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    Student student = (Student) o;
-    return Objects.equals(id, student.id) && Objects.equals(ime, student.ime) && Objects.equals(prezime, student.prezime);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, ime, prezime);
-  }
 }
