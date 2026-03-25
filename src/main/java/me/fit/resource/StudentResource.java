@@ -42,4 +42,22 @@ public class StudentResource {
     return Response.ok().entity(students).build();
   }
 
+  @GET
+  @Path("/getStudentByName")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getStudentByName(@QueryParam("name") String name){
+      List<Student> students = studentService.getStudentByName(name);
+      return Response.ok().entity(students).build();
+  }
+
+  @GET
+  @Path("/getPhonesByStudentId")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getPhonesByStudentId(@QueryParam("id") Long id){
+    List<Phone> phones = studentService.getPhonesByStudentId(id);
+
+    return Response.ok().entity(phones).build();
+  }
+
+
 }

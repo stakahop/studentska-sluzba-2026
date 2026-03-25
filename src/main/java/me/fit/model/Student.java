@@ -2,17 +2,18 @@ package me.fit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@NamedQuery(name = Student.GET_ALL_STUDENTS, query = "Select  s from Student s")
+@NamedQuery(name = Student.GET_ALL_STUDENTS, query = "Select  s.id, s.ime, s.prezime from Student s")
+@NamedQuery(name = Student.GET_STUDENT_BY_NAME, query = "Select  s from Student s where s.ime = :imeS")
 public class Student {
 
     public static final String GET_ALL_STUDENTS = "GetAllStudents";
+    public static final String GET_STUDENT_BY_NAME = "GetStudentByName";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
@@ -25,7 +26,7 @@ public class Student {
 
     public Student() {
 
-  }
+    }
 
   public Student(Long id, String ime, String prezime) {
     this.id = id;
@@ -33,7 +34,7 @@ public class Student {
     this.prezime = prezime;
   }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private List<Phone> phones = new ArrayList<>();
 

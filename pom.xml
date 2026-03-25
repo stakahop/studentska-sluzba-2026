@@ -83,6 +83,10 @@
         <version>1.18.44</version>
         <scope>compile</scope>
       </dependency>
+      <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-scheduler</artifactId>
+      </dependency>
     </dependencies>
 
     <build>

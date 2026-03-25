@@ -9,12 +9,18 @@ import lombok.Setter;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(name = Phone.GET_ALL_PHONES_FOR_STUDENT_ID, query = "Select p from Phone p where p.student.id = :id")
 public class Phone {
 
+  public static final String GET_ALL_PHONES_FOR_STUDENT_ID = "GetAllPhonesForStudentId";
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phone_seq")
   @SequenceGenerator(name = "phone_seq", sequenceName = "phone_seq", allocationSize = 1)
   private Long id;
+
+  @ManyToOne
+  @JoinColumn(name = "student_id")
+  private Student student;
 
   private String number;
 

@@ -44,5 +44,14 @@ public class StudentService {
   }
 
 
+  public List<Student> getStudentByName(String name) {
+    List<Student> students = em.createNamedQuery(Student.GET_STUDENT_BY_NAME, Student.class).setParameter("imeS", name).getResultList();
+    return  students;
+  }
 
+
+  public List<Phone> getPhonesByStudentId(Long id) {
+    List<Phone> phones = em.createNamedQuery(Phone.GET_ALL_PHONES_FOR_STUDENT_ID, Phone.class).setParameter("id", id).getResultList();
+    return  phones;
+  }
 }
