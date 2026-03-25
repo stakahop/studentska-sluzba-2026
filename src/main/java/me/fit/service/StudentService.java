@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import me.fit.exception.StudentException;
+import me.fit.model.Phone;
 import me.fit.model.Student;
 
 import java.util.List;
@@ -21,13 +22,14 @@ public class StudentService {
       if(student == null){
         throw new StudentException("Student nije proslijedjen");
       }
-      if(student.ime.isEmpty()){
+      if(student.getIme().isEmpty()){
         throw new StudentException("Ime je prazno");
       }
-      if(student.prezime.isEmpty()){
-         throw new StudentException("Prezime je prazno");
+      if(student.getPrezime().isEmpty()) {
+        throw new StudentException("Prezime je prazno");
       }
-      return em.merge(student);
+
+      return  em.merge(student);
   }
 
   @Transactional

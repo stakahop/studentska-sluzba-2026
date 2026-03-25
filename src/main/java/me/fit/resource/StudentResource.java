@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.fit.exception.StudentException;
+import me.fit.model.Phone;
 import me.fit.model.Student;
 import me.fit.service.StudentService;
 
@@ -40,4 +41,5 @@ public class StudentResource {
     }
     return Response.ok().entity(students).build();
   }
+
 }
