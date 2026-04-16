@@ -2,13 +2,24 @@ package me.fit.schedulers;
 
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import me.fit.model.TimeResponse;
+import me.fit.rest.client.TimeApi;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @ApplicationScoped
 public class StudentScheduler {
 
-  //@Scheduled(every="1s")
+  @Inject
+  @RestClient
+  TimeApi timeApi;
+
+  @Scheduled(every="5s")
   public void increment(){
-    int i =0;
-    System.out.println(i);
+
+    TimeResponse timeResponse = timeApi.getTime("Europe", "Podgorica");
+    System.out.println(timeResponse.getDatetime());
+
+
   }
 }

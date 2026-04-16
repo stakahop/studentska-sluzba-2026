@@ -59,5 +59,4 @@ public class StudentResource {
     return Response.ok().entity(phones).build();
   }
 
-
 }
