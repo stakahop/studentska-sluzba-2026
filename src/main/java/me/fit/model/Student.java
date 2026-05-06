@@ -12,21 +12,23 @@ import java.util.Objects;
 @NamedQuery(name = Student.GET_STUDENT_BY_NAME, query = "Select  s from Student s where s.ime = :imeS")
 public class Student {
 
-    public static final String GET_ALL_STUDENTS = "GetAllStudents";
-    public static final String GET_STUDENT_BY_NAME = "GetStudentByName";
+  public static final String GET_ALL_STUDENTS = "GetAllStudents";
+  public static final String GET_STUDENT_BY_NAME = "GetStudentByName";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
-    @SequenceGenerator(name = "student_seq", sequenceName = "student_seq", allocationSize = 1)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
+  @SequenceGenerator(name = "student_seq", sequenceName = "student_seq", allocationSize = 1)
+  private Long id;
 
-    private String ime;
+  private String ime;
 
-    private String prezime;
+  private String prezime;
 
-    public Student() {
+  private String filePath;
 
-    }
+  public Student() {
+
+  }
 
   public Student(Long id, String ime, String prezime) {
     this.id = id;
@@ -35,8 +37,8 @@ public class Student {
   }
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id")
-    private List<Phone> phones = new ArrayList<>();
+  @JoinColumn(name = "student_id")
+  private List<Phone> phones = new ArrayList<>();
 
   public Long getId() {
     return id;
@@ -70,15 +72,23 @@ public class Student {
     this.phones = phones;
   }
 
+  public void setFilePath(String filePath) {
+    this.filePath = filePath;
+  }
+
+  public String getFilePath() {
+    return filePath;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof Student student)) return false;
-    return Objects.equals(id, student.id) && Objects.equals(ime, student.ime) && Objects.equals(prezime, student.prezime) && Objects.equals(phones, student.phones);
+    return Objects.equals(id, student.id) && Objects.equals(ime, student.ime) && Objects.equals(prezime, student.prezime) && Objects.equals(filePath, student.filePath) && Objects.equals(phones, student.phones);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, ime, prezime, phones);
+    return Objects.hash(id, ime, prezime, filePath, phones);
   }
 
   @Override
@@ -87,6 +97,7 @@ public class Student {
       "id=" + id +
       ", ime='" + ime + '\'' +
       ", prezime='" + prezime + '\'' +
+      ", filePath='" + filePath + '\'' +
       ", phones=" + phones +
       '}';
   }

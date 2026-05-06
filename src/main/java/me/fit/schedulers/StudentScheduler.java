@@ -14,7 +14,7 @@ public class StudentScheduler {
   @RestClient
   TimeApi timeApi;
 
-  @Scheduled(every="5s")
+//  @Scheduled(every="5s")
   public void increment(){
 
     TimeResponse timeResponse = timeApi.getTime("Europe", "Podgorica");

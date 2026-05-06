@@ -5,29 +5,33 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.fit.exception.StudentException;
+import me.fit.model.MultipartBody;
 import me.fit.model.Phone;
 import me.fit.model.Student;
 import me.fit.service.StudentService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Path("/student")
 public class StudentResource {
 
-    @Inject
-    private StudentService studentService;
+  @Inject
+  private StudentService studentService;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/addStudent")
-    public Response addStudent(Student student) {
-      try {
-        studentService.createStudent(student);
-      } catch (StudentException e) {
-          return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-      }
-      return Response.ok().build();
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/addStudent")
+  public Response addStudent(Student student) {
+    try {
+      studentService.createStudent(student);
+    } catch (StudentException e) {
+      return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
     }
+    return Response.ok().build();
+  }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -45,18 +49,30 @@ public class StudentResource {
   @GET
   @Path("/getStudentByName")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getStudentByName(@QueryParam("name") String name){
-      List<Student> students = studentService.getStudentByName(name);
-      return Response.ok().entity(students).build();
+  public Response getStudentByName(@QueryParam("name") String name) {
+    List<Student> students = studentService.getStudentByName(name);
+    return Response.ok().entity(students).build();
   }
 
   @GET
   @Path("/getPhonesByStudentId")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getPhonesByStudentId(@QueryParam("id") Long id){
+  public Response getPhonesByStudentId(@QueryParam("id") Long id) {
     List<Phone> phones = studentService.getPhonesByStudentId(id);
 
     return Response.ok().entity(phones).build();
+  }
+
+  @POST
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Path("/addImageToStudent")
+  public Response addImageToStudent(MultipartBody multipartBody) {
+    try {
+      Files.copy(multipartBody.file.uploadedFile(), java.nio.file.Path.of("/Users/stakahop/Desktop/files/" + multipartBody.file.fileName()), StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException e) {
+      return Response.serverError().build();
+    }
+    return Response.ok().build();
   }
 
 }
